@@ -18,6 +18,7 @@ url = f'https://citaprevia-sede.sepe.gob.es/citapreviasepe/cita/cargaTiposAtenci
 start_time = time.monotonic()
 popup_message = "¡Cita disponible!"
 no_appointments_message = "No hay citas"
+error_message = "Ha ocurrido un error"
 frequency = 300.0 #5 Minutes
 
 while True:
@@ -34,5 +35,5 @@ while True:
         else:
             print(current_time + " - " + no_appointments_message)
     else:
-        print("Ha ocurrido un error")
+        print(error_message)
     time.sleep(frequency - ((time.monotonic() - start_time) % frequency))
