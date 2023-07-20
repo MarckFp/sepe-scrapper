@@ -30,7 +30,7 @@ while True:
             if os.name == 'posix':
                 subprocess.Popen(['notify-send', popup_message])
             elif os.name == 'nt':
-                subprocess.Popen(['(Get-WmiObject Win32_OperatingSystem).Version', '|', 'Show-Notification', '-ToastTitle', popup_message])
+                print(popup_message) #Making pop-us on windows is hard man
             print(res.json()['listaOficina'][0]['primerHuecoDisponible'])
         else:
             print(current_time + " - " + no_appointments_message)
