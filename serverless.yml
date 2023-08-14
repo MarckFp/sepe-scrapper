@@ -22,7 +22,6 @@ functions:
     environment:
       ZIPCODE: ${env:ZIPCODE}
       ID_CLIENTE: ${env:ID_CLIENTE}
-      CODIGO_ENTIDAD: ${env:CODIGO_ENTIDAD}
       ID_GRUPO_SERVICIO: ${env:ID_GRUPO_SERVICIO}
       LAT_ORIGEN: ${env:LAT_ORIGEN}
       LNG_ORIGEN: ${env:LNG_ORIGEN}
