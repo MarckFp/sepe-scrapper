@@ -1,0 +1,49 @@
+provider:
+  name: aws
+  runtime: python3.11
+  architecture: arm64
+  stage: production
+  region: eu-west-1
+  deploymentBucket:
+    serverSideEncryption: AES256
+    blockPublicAccess: true
+
+package:
+  individually: true
+  patterns:
+    - "!./**"
+
+functions:
+  sepe-scrapper:
+    handler: sepe_scrapper_lambda.handler
+    description: "Lambda function in charge of checking SEPE appointments"
+    memorySize: 128
+    timeout: 60
+    environment:
+      ZIPCODE: ${env:ZIPCODE}
+      ID_CLIENTE: ${env:ID_CLIENTE}
+      CODIGO_ENTIDAD: ${env:CODIGO_ENTIDAD}
+      ID_GRUPO_SERVICIO: ${env:ID_GRUPO_SERVICIO}
+      LAT_ORIGEN: ${env:LAT_ORIGEN}
+      LNG_ORIGEN: ${env:LNG_ORIGEN}
+      TRAMITE_RELACIONADO: ${env:TRAMITE_RELACIONADO}
+      IDS_JERARQUIA_TRAMITES: ${env:IDS_JERARQUIA_TRAMITES}
+      TELEGRAM_TOKEN: ${env:TELEGRAM_TOKEN}
+      TELEGRAM_CHAT_ID: ${env:TELEGRAM_CHAT_ID}
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    package:
+      patterns:
+        - "sepe_scrapper_lambda.py"
+    events:
+      - schedule:
+          enabled: true
+          rate: cron(5 * * * ? *)
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    slim: true
+    layer: true

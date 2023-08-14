@@ -1,0 +1,33 @@
+name: Deploy
+run-name: ${{ github.actor  }} is deploying the app 🚀
+
+on:
+  release:
+    types: [published]
+
+env:
+  TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN  }}
+  TELEGRAM_CHAT_ID: ${{secrets.TELEGRAM_CHAT_ID }}
+  ZIPCODE: ${{secrets.ZIPCODE }}
+  ID_CLIENTE: ${{secrets.ID_CLIENTE }}
+  ID_GRUPO_SERVICIO: ${{secrets.ID_GRUPO_SERVICIO }}
+  LAT_ORIGEN: ${{secrets.LAT_ORIGEN }}
+  LNG_ORIGEN: ${{secrets.LNG_ORIGEN }}
+  TRAMITE_RELACIONADO: ${{secrets.TRAMITE_RELACIONADO }}
+  IDS_JERARQUIA_TRAMITES: ${{secrets.IDS_JERARQUIA_TRAMITES }}
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - run: pip install -r requirements.txt
+      - run: npm install -g serverless
+      - run: sls plugin install -n serverless-python-requirements
+      - run: sls deploy
