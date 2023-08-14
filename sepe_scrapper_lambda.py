@@ -19,7 +19,7 @@ TRAMITE_RELACIONADO = os.getenv('TRAMITE_RELACIONADO')
 IDS_JERARQUIA_TRAMITES = os.getenv('IDS_JERARQUIA_TRAMITES')
 SEPE_URL = f'https://citaprevia-sede.sepe.gob.es/citapreviasepe/cita/cargaTiposAtencionMapa?idCliente={ID_CLIENTE}&codigoEntidad={CODIGO_ENTIDAD}&idGrupoServicio={ID_GRUPO_SERVICIO}&codigoPostal={ZIPCODE}&latOrigen={LAT_ORIGEN}&lngOrigen={LNG_ORIGEN}&tieneTramiteRelacionado={TRAMITE_RELACIONADO}&idsJerarquiaTramites={IDS_JERARQUIA_TRAMITES}' 
 
-def (event, _context):
+def handler(event, _context):
     popup_message = "¡Cita disponible!"
     no_appointments_message = "No hay citas"
     error_message = "Ha ocurrido un error"
