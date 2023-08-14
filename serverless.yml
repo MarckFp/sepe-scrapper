@@ -21,6 +21,7 @@ functions:
     description: "Lambda function in charge of checking SEPE appointments"
     memorySize: 128
     timeout: 60
+    url: true
     environment:
       ZIPCODE: ${env:ZIPCODE}
       ID_CLIENTE: ${env:ID_CLIENTE}
