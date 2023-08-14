@@ -1,7 +1,6 @@
-import requests
 import time
-import subprocess
 import os
+import requests
 
 #TELEGRAM
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
@@ -17,17 +16,17 @@ LAT_ORIGEN = os.getenv('LAT_ORIGEN')
 LNG_ORIGEN = os.getenv('LNG_ORIGEN')
 TRAMITE_RELACIONADO = os.getenv('TRAMITE_RELACIONADO')
 IDS_JERARQUIA_TRAMITES = os.getenv('IDS_JERARQUIA_TRAMITES')
-SEPE_URL = f'https://citaprevia-sede.sepe.gob.es/citapreviasepe/cita/cargaTiposAtencionMapa?idCliente={ID_CLIENTE}&codigoEntidad={CODIGO_ENTIDAD}&idGrupoServicio={ID_GRUPO_SERVICIO}&codigoPostal={ZIPCODE}&latOrigen={LAT_ORIGEN}&lngOrigen={LNG_ORIGEN}&tieneTramiteRelacionado={TRAMITE_RELACIONADO}&idsJerarquiaTramites={IDS_JERARQUIA_TRAMITES}' 
+SEPE_URL = f'https://citaprevia-sede.sepe.gob.es/citapreviasepe/cita/cargaTiposAtencionMapa?idCliente={ID_CLIENTE}&codigoEntidad={CODIGO_ENTIDAD}&idGrupoServicio={ID_GRUPO_SERVICIO}&codigoPostal={ZIPCODE}&latOrigen={LAT_ORIGEN}&lngOrigen={LNG_ORIGEN}&tieneTramiteRelacionado={TRAMITE_RELACIONADO}&idsJerarquiaTramites={IDS_JERARQUIA_TRAMITES}'
 
-def handler(event, _context):
+def handler(_event, _context):
     popup_message = "¡Cita disponible!"
     no_appointments_message = "No hay citas"
     error_message = "Ha ocurrido un error"
 
-    res = requests.get(url)
+    res = requests.get(SEPE_URL, timeout=45)
     if res.status_code == 200:
-        t = time.localtime()
-        current_time = time.strftime("%H:%M:%S", t)
+        local_time = time.localtime()
+        current_time = time.strftime("%H:%M:%S", local_time)
         if res.json()['listaOficina'][0]['primerHuecoDisponible'] != '':
             data = {"text": popup_message.encode("utf8"), "chat_id": TELEGRAM_CHAT_ID}
             requests.post(TELEGRAM_URL, data, timeout=15)

@@ -1,39 +1,40 @@
-import requests
 import time
 import subprocess
 import os
+import requests
 
 # You should change this data, if you are unsure visit https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/cita-previa/cita-previa-solicitud.html
 # and catch your own request data from the network tool at the Browser Developer Tools
-idCliente = 0
-codigoEntidad = ''
-idGrupoServicio = 0
-codigoPostal = '00000'
-latOrigen = '00.000000'
-lngOrigen = '-0.000000'
-tieneTramiteRelacionado = 0
-idsJerarquiaTramites = 0
-url = f'https://citaprevia-sede.sepe.gob.es/citapreviasepe/cita/cargaTiposAtencionMapa?idCliente={idCliente}&codigoEntidad={codigoEntidad}&idGrupoServicio={idGrupoServicio}&codigoPostal={codigoPostal}&latOrigen={latOrigen}&lngOrigen={lngOrigen}&tieneTramiteRelacionado={tieneTramiteRelacionado}&idsJerarquiaTramites={idsJerarquiaTramites}'
+ID_CLIENTE = 0
+CODIGO_ENTIDAD = ''
+ID_GRUPO_SERVICIO = 0
+CODIGO_POSTAL = '00000'
+LAT_ORIGEN = '00.000000'
+LNG_ORIGEN = '-0.000000'
+TRAMITE_RELACIONADO = 0
+IDS_JERARQUIA_TRAMITES = 0
+URL = f'https://citaprevia-sede.sepe.gob.es/citapreviasepe/cita/cargaTiposAtencionMapa?idCliente={ID_CLIENTE}&codigoEntidad={CODIGO_ENTIDAD}&idGrupoServicio={ID_GRUPO_SERVICIO}&codigoPostal={CODIGO_POSTAL}&latOrigen={LAT_ORIGEN}&lngOrigen={LNG_ORIGEN}&tieneTramiteRelacionado={TRAMITE_RELACIONADO}&idsJerarquiaTramites={IDS_JERARQUIA_TRAMITES}'
+
+POPUP_MESSAGE = "¡Cita disponible!"
+NO_APPOINTMENTS_MESSAGE = "No hay citas"
+ERROR_MESSAGE = "Ha ocurrido un error"
+FREQUENCY = 300.0 #5 Minutes
 
 start_time = time.monotonic()
-popup_message = "¡Cita disponible!"
-no_appointments_message = "No hay citas"
-error_message = "Ha ocurrido un error"
-frequency = 300.0 #5 Minutes
 
 while True:
-    res = requests.get(url)
+    res = requests.get(URL, timeout=45)
     if res.status_code == 200:
-        t = time.localtime()
-        current_time = time.strftime("%H:%M:%S", t)
+        local_time = time.localtime()
+        current_time = time.strftime("%H:%M:%S", local_time)
         if res.json()['listaOficina'][0]['primerHuecoDisponible'] != '':
             if os.name == 'posix':
-                subprocess.Popen(['notify-send', popup_message])
+                subprocess.Popen(['notify-send', POPUP_MESSAGE])
             elif os.name == 'nt':
-                print(popup_message) #Making pop-us on windows is hard man
+                print(POPUP_MESSAGE) #Making pop-us on windows is hard man
             print(res.json()['listaOficina'][0]['primerHuecoDisponible'])
         else:
-            print(current_time + " - " + no_appointments_message)
+            print(current_time + " - " + NO_APPOINTMENTS_MESSAGE)
     else:
-        print(error_message)
-    time.sleep(frequency - ((time.monotonic() - start_time) % frequency))
+        print(ERROR_MESSAGE)
+    time.sleep(FREQUENCY - ((time.monotonic() - start_time) % FREQUENCY))
