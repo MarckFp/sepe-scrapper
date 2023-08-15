@@ -23,7 +23,7 @@ FREQUENCY = 300.0 #5 Minutes
 start_time = time.monotonic()
 
 while True:
-    res = requests.get(URL, timeout=45)
+    res = requests.get(URL, timeout=30)
     if res.status_code == 200:
         local_time = time.localtime()
         current_time = time.strftime("%H:%M:%S", local_time)

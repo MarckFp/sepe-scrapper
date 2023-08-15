@@ -19,19 +19,19 @@ IDS_JERARQUIA_TRAMITES = os.getenv('IDS_JERARQUIA_TRAMITES')
 SEPE_URL = f'https://citaprevia-sede.sepe.gob.es/citapreviasepe/cita/cargaTiposAtencionMapa?idCliente={ID_CLIENTE}&codigoEntidad={CODIGO_ENTIDAD}&idGrupoServicio={ID_GRUPO_SERVICIO}&codigoPostal={ZIPCODE}&latOrigen={LAT_ORIGEN}&lngOrigen={LNG_ORIGEN}&tieneTramiteRelacionado={TRAMITE_RELACIONADO}&idsJerarquiaTramites={IDS_JERARQUIA_TRAMITES}'
 
 def handler(_event, _context):
-    popup_message = "¡Cita disponible!"
-    no_appointments_message = "No hay citas"
-    error_message = "Ha ocurrido un error"
+    POPUP_MESSAGE = "¡Cita disponible!"
+    NO_APPOINTMENTS_MESSAGE = "No hay citas"
+    ERROR_MESSAGE = "Ha ocurrido un error"
 
-    res = requests.get(SEPE_URL, timeout=45)
+    res = requests.get(SEPE_URL, timeout=20)
     if res.status_code == 200:
         local_time = time.localtime()
         current_time = time.strftime("%H:%M:%S", local_time)
         if res.json()['listaOficina'][0]['primerHuecoDisponible'] != '':
-            data = {"text": popup_message.encode("utf8"), "chat_id": TELEGRAM_CHAT_ID}
-            requests.post(TELEGRAM_URL, data, timeout=15)
+            data = {"text": POPUP_MESSAGE.encode("utf8"), "chat_id": TELEGRAM_CHAT_ID}
+            requests.post(TELEGRAM_URL, data, timeout=10)
             print(res.json()['listaOficina'][0]['primerHuecoDisponible'])
         else:
-            print(current_time + " - " + no_appointments_message)
+            print(current_time + " - " + NO_APPOINTMENTS_MESSAGE)
     else:
-        print(error_message)
+        print(ERROR_MESSAGE)

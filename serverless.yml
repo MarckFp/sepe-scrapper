@@ -20,7 +20,7 @@ functions:
     handler: sepe_scrapper_lambda.handler
     description: "Lambda function in charge of checking SEPE appointments"
     memorySize: 128
-    timeout: 60
+    timeout: 30
     environment:
       ZIPCODE: ${env:ZIPCODE}
       ID_CLIENTE: ${env:ID_CLIENTE}
