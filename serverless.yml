@@ -38,7 +38,7 @@ functions:
         - "sepe_scrapper_lambda.py"
     events:
       - schedule:
-          enabled: true
+          enabled: false
           rate: cron(0/5 * * * ? *)
 
 plugins:
