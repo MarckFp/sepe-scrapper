@@ -1,0 +1,15 @@
+{
+    "Estoy cobrando prestación/subsidio y ha cambiado mi situación *** Voy a salir al extranjero": {"idGrupoServicio": 23},
+    "Estoy cobrando prestación/subsidio y ha cambiado mi situación *** Estoy de baja por incapacidad temporal/maternidad/paternidad": {"idGrupoServicio": 20},
+    "Estoy cobrando prestación/subsidio y ha cambiado mi situación *** Me voy a jubilar" : {"idGrupoServicio": 17},
+    "Estoy cobrando prestación/subsidio y ha cambiado mi situación *** He encontrado trabajo o me he autoempleado por cuenta propia" : {"idGrupoServicio": 14},
+    "Información general": {"idGrupoServicio": 41},
+    "Entrega documentación": {"idGrupoServicio": 44},
+    "Modificar datos bancarios": {"idGrupoServicio": 47},
+    "Cobros indebidos": {"idGrupoServicio": 29},
+    "Sanciones": {"idGrupoServicio": 32},
+    "Variaciones económicas o familiares": {"idGrupoServicio": 35},
+    "Declaración anual de rentas o prorroga": {"idGrupoServicio": 26},
+    "He finalizado un trabajo: acceso o reanudación prestación/subsidio": {"idGrupoServicio": 8, "tieneTramiteRelacionado": 0},
+    "Finalizar prestación, RAI, extraordinarios": {"idGrupoServicio": 11, "tieneTramiteRelacionado": 0}
+}
