@@ -6,6 +6,8 @@ provider:
   architecture: arm64
   stage: production
   region: eu-west-1
+  environment:
+    DYNAMODB_TABLE: ${env:DYNAMODB_TABLE}
   deploymentBucket:
     serverSideEncryption: AES256
     blockPublicAccess: true
@@ -16,33 +18,46 @@ package:
     - "!./**"
 
 functions:
-  sepe-scrapper:
-    handler: sepe_scrapper_lambda.handler
-    description: "Lambda function in charge of checking SEPE appointments"
+  appointment-publisher:
+    handler: appointment_publisher.handler
+    description: "Lambda function in charge of checking which appointment checks has to be done and queue it"
     memorySize: 128
-    timeout: 30
+    timeout: 60
     environment:
-      ZIPCODE: ${env:ZIPCODE}
-      ID_CLIENTE: ${env:ID_CLIENTE}
-      ID_GRUPO_SERVICIO: ${env:ID_GRUPO_SERVICIO}
-      LAT_ORIGEN: ${env:LAT_ORIGEN}
-      LNG_ORIGEN: ${env:LNG_ORIGEN}
-      TRAMITE_RELACIONADO: ${env:TRAMITE_RELACIONADO}
-      IDS_JERARQUIA_TRAMITES: ${env:IDS_JERARQUIA_TRAMITES}
-      TELEGRAM_TOKEN: ${env:TELEGRAM_TOKEN}
-      TELEGRAM_CHAT_ID: ${env:TELEGRAM_CHAT_ID}
+      SEPE_QUEUE: ${construct:sepe-queue.queueUrl}
     layers:
       - Ref: PythonRequirementsLambdaLayer
     package:
       patterns:
-        - "sepe_scrapper_lambda.py"
+        - "appointment_publisher.py"
     events:
       - schedule:
           enabled: true
           rate: cron(0/5 * * * ? *)
 
+constructs:
+  sepe-queue:
+    type: queue
+    worker:
+      handler: workers.sepe_worker.handler
+      description: "Lambda function in charge of checking SEPE appointments"
+      memorySize: 128
+      timeout: 30
+      environment:
+        ID_CLIENTE: ${env:ID_CLIENTE}
+        LAT_ORIGEN: ${env:LAT_ORIGEN}
+        LNG_ORIGEN: ${env:LNG_ORIGEN}
+        IDS_JERARQUIA_TRAMITES: ${env:IDS_JERARQUIA_TRAMITES}
+        TELEGRAM_TOKEN: ${env:TELEGRAM_TOKEN}
+      layers:
+        - Ref: PythonRequirementsLambdaLayer
+      package:
+        patterns:
+          - "workers/sepe_worker.py"
+
 plugins:
   - serverless-python-requirements
+  - serverless-lift
 
 custom:
   pythonRequirements:
