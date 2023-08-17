@@ -1,15 +1,17 @@
-import os
-import boto3
+from os import environ
+from json import dumps
+from boto3 import client
 #TODO Make this code parallel instead of sequential
 #from multiprocessing import Process, Pipe
 
 #BOTO3 Clients
-DYNAMODB_CLIENT = boto3.client('dynamodb')
-SQS_CLIENT = boto3.client('sqs')
+DYNAMODB_CLIENT = client('dynamodb')
+SQS_CLIENT = client('sqs')
 
 #Constants
-DYNAMODB_TABLE = os.getenv('DYNAMODB_TABLE')
-SEPE_QUEUE = os.getenv('SEPE_QUEUE')
+DYNAMODB_TABLE = environ('DYNAMODB_TABLE')
+SEPE_QUEUE = environ('SEPE_QUEUE')
+SEG_SOCIAL_QUEUE = environ('SEG_SOCIAL_QUEUE')
 
 def handler(_event, _context):
     user_list = DYNAMODB_CLIENT.scan(
@@ -34,16 +36,16 @@ def handler(_event, _context):
                     match appointment['entity']:
                         case 'sepe':
                             print('Sepe entity')
-                            send_sepe_queue_event()
+                            send_queue_event(SEPE_QUEUE, user, appointment)
                             continue
-                        case 'seg-social':
-                            print('Seg-Social entity')
-                            continue
+   c
                         case _:
                             print('Unknown entity')
+                            continue
 
-def send_sepe_queue_event():
+def send_queue_event(queue_url, user, appointment):
+    event = {"user": user, "appointment": appointment}
     response = SQS_CLIENT.send_message(
-        QueueUrl=SEPE_QUEUE,
-        MessageBody='string',
+        QueueUrl=queue_url,
+        MessageBody=dumps(event),
     )

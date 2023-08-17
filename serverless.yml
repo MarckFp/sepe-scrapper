@@ -5,9 +5,7 @@ provider:
   runtime: python3.11
   architecture: arm64
   stage: production
-  region: eu-west-1
-  environment:
-    DYNAMODB_TABLE: ${env:DYNAMODB_TABLE}
+  region: eu-south-2
   deploymentBucket:
     serverSideEncryption: AES256
     blockPublicAccess: true
@@ -25,6 +23,7 @@ functions:
     timeout: 60
     environment:
       SEPE_QUEUE: ${construct:sepe-queue.queueUrl}
+      DYNAMODB_TABLE: ${env:DYNAMODB_TABLE}
     layers:
       - Ref: PythonRequirementsLambdaLayer
     package:
