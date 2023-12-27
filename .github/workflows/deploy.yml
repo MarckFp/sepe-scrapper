@@ -17,6 +17,8 @@ env:
   IDS_JERARQUIA_TRAMITES: ${{secrets.IDS_JERARQUIA_TRAMITES }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  COD_IDIOMA: ${{ secrets.COD_IDIOMA }}
+  COD_ENTIDAD: ${{ secrets.COD_ENTIDAD }}
 jobs:
   Deploy:
     runs-on: ubuntu-latest
