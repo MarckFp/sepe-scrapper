@@ -17,7 +17,7 @@ LAT_ORIGEN = os.getenv('LAT_ORIGEN')
 LNG_ORIGEN = os.getenv('LNG_ORIGEN')
 TRAMITE_RELACIONADO = os.getenv('TRAMITE_RELACIONADO')
 IDS_JERARQUIA_TRAMITES = os.getenv('IDS_JERARQUIA_TRAMITES')
-SEPE_URL = f'https://citaprevia-sede.sepe.gob.es/citapreviasepe/cita/cargaTiposAtencionMapa?idCliente={ID_CLIENTE}&codigoEntidad={CODIGO_ENTIDAD}&idGrupoServicio={ID_GRUPO_SERVICIO}&codigoPostal={ZIPCODE}&latOrigen={LAT_ORIGEN}&lngOrigen={LNG_ORIGEN}&tieneTramiteRelacionado={TRAMITE_RELACIONADO}&idsJerarquiaTramites={IDS_JERARQUIA_TRAMITES}&codIdioma={COD_IDIOMA}&codigoEntidad={COD_ENTIDAD}'
+SEPE_URL = f'https://citaprevia-sede.sepe.gob.es/citapreviasepe/cita/cargaTiposAtencionMapa?idCliente={ID_CLIENTE}&idGrupoServicio={ID_GRUPO_SERVICIO}&codigoPostal={ZIPCODE}&latOrigen={LAT_ORIGEN}&lngOrigen={LNG_ORIGEN}&tieneTramiteRelacionado={TRAMITE_RELACIONADO}&idsJerarquiaTramites={IDS_JERARQUIA_TRAMITES}&codIdioma={COD_IDIOMA}&codigoEntidad={COD_ENTIDAD}'
 def handler(_event, _context):
     POPUP_MESSAGE = "¡Cita disponible!"
     NO_APPOINTMENTS_MESSAGE = "No hay citas"
