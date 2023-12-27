@@ -3,7 +3,7 @@ This tool is done to be able to find appointments in your location in a Spanish 
 
 # Requirements
 
-- Python 3.8 or above
+- Python 3.11 or above
 
 # Configuration
 
